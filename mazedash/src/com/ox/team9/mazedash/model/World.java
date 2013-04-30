@@ -44,6 +44,14 @@ public class World {
 		environment.getElement(row, column).add(element);
 	}
 	
+	// Remove element from top of stack at (row, column)
+	public void removeElement(int row, int column) {
+		environment.getElement(row, column).remove(environment.getElement(row, column).size()-1);
+	}
+	
+	
+	
+	
 	// Get height of cell (row, column).
 	public int getHeightAt(int row, int column) {
 		int totalHeight = 0;
