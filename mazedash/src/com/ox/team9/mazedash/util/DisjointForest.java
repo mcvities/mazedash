@@ -1,5 +1,6 @@
 package com.ox.team9.mazedash.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -52,6 +53,24 @@ public class DisjointForest<E> {
 	public void toList(List<E> list) {
 		list.addAll(forest.keySet());
 	}
+	
+	public List<List<E>> disjointElements(List<E> elems, List<List<E>> list) {
+		HashMap<E,List<E>> lists = new HashMap<E,List<E>>();
+		
+		for (E elem : elems) {
+			E key = find(elem);
+					
+			if (!lists.containsKey(key))
+				lists.put(key, new ArrayList<E>());
+			
+			lists.get(key).add(elem);
+		}
+		list.addAll(lists.values());
+		return list;
+	}
+	
+	
+	
 	
 	// Used to represent the nodes of the forest.
 	private static class Node<T> {

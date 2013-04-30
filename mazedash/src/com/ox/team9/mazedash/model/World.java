@@ -79,7 +79,7 @@ public class World {
 	
 	// Draw the world.
 	public void draw(SpriteBatch spriteBatch) {
-		System.out.println("Drawing the world!");
+		// System.out.println("Drawing the world!");
 		
 		for (int row = rows - 1; row >= 0; row -= 1)
 			for (int column = 0; column < columns; column += 1) {
