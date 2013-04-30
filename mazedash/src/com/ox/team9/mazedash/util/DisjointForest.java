@@ -54,6 +54,9 @@ public class DisjointForest<E> {
 		list.addAll(forest.keySet());
 	}
 	
+	
+	// Take a list of elements, and return them separated into a list of lists,
+	// with disjoint elements being in different lists
 	public List<List<E>> disjointElements(List<E> elems, List<List<E>> list) {
 		HashMap<E,List<E>> lists = new HashMap<E,List<E>>();
 		

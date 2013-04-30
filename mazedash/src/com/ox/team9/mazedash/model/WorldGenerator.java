@@ -29,15 +29,6 @@ public class WorldGenerator {
 		
 		// Generate graph here.
 		
-
-		// STARTS HERE
-
-		
-		
-		
-		
-
-		// Generate graph here.
 		Random rand = new Random();
 
 		// Add walls
@@ -48,6 +39,8 @@ public class WorldGenerator {
 			for (int i = 0; i < rows; i += 2)
 				world.addElement(i, j, new Key(sprites));
 
+		
+		// Each block is represented by the integer (row + column * rows)
 		DisjointForest<Integer> forest = new DisjointForest<Integer>();
 
 		// Add first column to forest	
@@ -62,17 +55,13 @@ public class WorldGenerator {
 			System.out.println("Column "+j/rows);
 
 			// Randomly make vertical connections
-			for (int i = 0; i < rows-2; i+=2) {
+			for (int i = 0; i < rows-2; i+=2) 
 				if (rand.nextBoolean()) {
 					forest.union(i+j, i+j+2);
 					world.removeElement(i+1,j/rows);
 										
 					System.out.println("Connect: "+i+ ","+(i+2));
 				}
-				
-		
-				
-			}
 			
 			
 			// Make horizontal connections, one per set.
@@ -119,25 +108,11 @@ public class WorldGenerator {
 		
 		
 		
-		
-		
-		
-		// ENDS HERE
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		// Place key at (rows - 1, 0).
-		//world.addElement(rows - 1, 0, new Key(sprites));
+		// world.addElement(rows - 1, 0, new Key(sprites));
 		
 		// Place gate at (0, columns - 1).
-		//world.addElement(0, columns - 1, new Gate(sprites));
+		// world.addElement(0, columns - 1, new Gate(sprites));
 		
 		// Place player at (0, 0).
 		world.setPlayer(0, 0);

@@ -34,7 +34,7 @@ public class MazeDash implements ApplicationListener {
 		
 		sprites = new Texture(Gdx.files.internal("sprites.png"));
 		
-		worldGenerator = new WorldGenerator(7, 13, sprites);
+		worldGenerator = new WorldGenerator(9, 13, sprites);
 		
 		world = worldGenerator.getWorld();
 		
