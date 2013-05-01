@@ -34,7 +34,7 @@ public class MazeDash implements ApplicationListener {
 		
 		sprites = new Texture(Gdx.files.internal("sprites.png"));
 		
-		worldGenerator = new WorldGenerator(9, 13, sprites);
+		worldGenerator = new WorldGenerator(7, 13, sprites);
 		
 		world = worldGenerator.getWorld();
 		
@@ -44,14 +44,11 @@ public class MazeDash implements ApplicationListener {
 	public void dispose() {
 		batch.dispose();
 	}
-
-	@Override
-	public void render() {	
+	
+	private void processInput() {
 		if (Gdx.input.isKeyPressed(Keys.UP)) {
-			//System.out.println("UP IS PRESSED");
 			int dY = (int)(Gdx.graphics.getDeltaTime() * Player.SPEED_IN_PX_PER_SECOND);
 			world.movePlayer(0, dY, 0);
-			
 		} else if (Gdx.input.isKeyPressed(Keys.DOWN)) {
 			int dY = -(int)(Gdx.graphics.getDeltaTime() * Player.SPEED_IN_PX_PER_SECOND);
 			world.movePlayer(0, dY, 0);
@@ -62,6 +59,16 @@ public class MazeDash implements ApplicationListener {
 			int dX = (int)(Gdx.graphics.getDeltaTime() * Player.SPEED_IN_PX_PER_SECOND);
 			world.movePlayer(dX, 0, 0);
 		}
+	}
+	
+	private void processGravity() {
+		
+	}
+
+	@Override
+	public void render() {	
+		processInput();
+		processGravity();
 		
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);

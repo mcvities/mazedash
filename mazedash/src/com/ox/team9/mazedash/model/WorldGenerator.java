@@ -34,10 +34,10 @@ public class WorldGenerator {
 		// Add walls
 		for (int i = 1; i < rows; i += 2)
 			for (int j = 0; j < columns; j++)
-				world.addElement(i, j, new Key(sprites));
+				world.addElement(i, j, new HighStoneBlock(sprites));
 		for (int j = 1; j < columns; j+=2)
 			for (int i = 0; i < rows; i += 2)
-				world.addElement(i, j, new Key(sprites));
+				world.addElement(i, j, new HighStoneBlock(sprites));
 
 		
 		// Each block is represented by the integer (row + column * rows)
@@ -109,10 +109,10 @@ public class WorldGenerator {
 		
 		
 		// Place key at (rows - 1, 0).
-		// world.addElement(rows - 1, 0, new Key(sprites));
+		world.addElement(rows - 1, 0, new Key(sprites));
 		
 		// Place gate at (0, columns - 1).
-		// world.addElement(0, columns - 1, new Gate(sprites));
+		world.addElement(0, columns - 1, new Gate(sprites));
 		
 		// Place player at (0, 0).
 		world.setPlayer(0, 0);

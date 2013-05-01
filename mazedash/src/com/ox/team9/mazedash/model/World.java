@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
 
+import com.ox.team9.mazedash.visitor.*;
+
 public class World {
 	public static final int CELL_SIDE_IN_PX = 60;
 	public static final int CELL_3D_SIDE_IN_PX = 48;
@@ -49,9 +51,6 @@ public class World {
 		environment.getElement(row, column).remove(environment.getElement(row, column).size()-1);
 	}
 	
-	
-	
-	
 	// Get height of cell (row, column).
 	public int getHeightAt(int row, int column) {
 		int totalHeight = 0;
@@ -72,16 +71,86 @@ public class World {
 	}
 	
 	public void movePlayer(int dX, int dY, int dH) {
-		playerX += dX;
-		playerY += dY;
-		playerH += dH;
+		int newX = playerX + dX;
+		int newY = playerY + dY;
+		int newH = playerH + dH;
+		
+		if (validPlayerCoordinates(newX, newY, newH)) {
+			playerX = newX;
+			playerY = newY;
+			playerH = newH;
+		}
+	}
+	
+	private int min(int x, int y) {
+		return x < y ? x : y;
+	}
+	
+	private int max(int x, int y) {
+		return x > y ? x : y;
+	}
+	
+	private boolean overlap(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
+		int minMaxX = min(x2, x4);
+		int maxMinX = max(x1, x3);
+		
+		int minMaxY = min(y2, y4);
+		int maxMinY = max(y1, y3);
+		
+		if (minMaxX >= maxMinX && minMaxY >= maxMinY) {
+			return true;
+		} else {
+			return false;
+		}
+		
+	}
+	
+	private boolean validPlayerCoordinates(int X, int Y, int H) {
+		for (int row = 0; row < rows; row += 1)
+			for (int column = 0; column < columns; column += 1) {
+				int playerMinX = X - Player.SIZE_IN_PX / 2;
+				int playerMaxX = X + Player.SIZE_IN_PX / 2 -1;
+				
+				int playerMinY = Y - Player.SIZE_IN_PX / 2;
+				int playerMaxY = Y + Player.SIZE_IN_PX / 2 - 1;
+				
+				int totalHeight = 0;
+				
+				for (WorldElement element : environment.getElement(row, column)) {
+					int minX = column * CELL_SIDE_IN_PX;
+					int minY = row * CELL_SIDE_IN_PX;
+					
+					int maxX = (column + 1) * CELL_SIDE_IN_PX - 1;
+					int maxY = (row + 1) * CELL_SIDE_IN_PX - 1;
+					
+					if (H >= totalHeight && H < totalHeight + element.getHeight()) {
+						if (overlap(playerMinX, playerMinY, playerMaxX, playerMaxY,
+									minX, minY, maxX, maxY)) {
+							
+							PlayerVisitor playerVisitor = new PlayerVisitor();
+							
+							element.accept(environment.getElement(row, column), playerVisitor);
+							
+							if (!playerVisitor.couldVisit()) {
+								return false;
+							} else {
+								return true;
+							}
+						}
+					}
+					
+					totalHeight += element.getHeight();
+				}
+			}
+		
+		return true;
 	}
 	
 	// Draw the world.
 	public void draw(SpriteBatch spriteBatch) {
-		// System.out.println("Drawing the world!");
+		System.out.println("Drawing the world!");
 		
-		for (int row = rows - 1; row >= 0; row -= 1)
+		for (int row = rows - 1; row >= 0; row -= 1) {
 			for (int column = 0; column < columns; column += 1) {
 				int height = 0;
 				for (WorldElement worldElement : environment.getElement(row, column)) {
@@ -91,8 +160,12 @@ public class World {
 					height += worldElement.getHeight();
 				}
 			}
-		
-		player.draw(playerX - World.CELL_SIDE_IN_PX / 2, playerY - World.CELL_SIDE_IN_PX / 2,
-				playerH, spriteBatch);
+			
+			if (playerY - Player.SIZE_IN_PX / 2 >= row * CELL_SIDE_IN_PX &&
+				playerY - Player.SIZE_IN_PX / 2 < (row + 1) * CELL_SIDE_IN_PX) {
+				player.draw(playerX - World.CELL_SIDE_IN_PX / 2, playerY - World.CELL_SIDE_IN_PX / 2,
+						playerH, spriteBatch);
+			}
+		}
 	}
 }
