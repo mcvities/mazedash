@@ -44,15 +44,24 @@ public class WorldGenerator {
 		DisjointForest<Integer> forest = new DisjointForest<Integer>();
 
 		// Add first column to forest	
-		for (int i = 0; i < rows; i+=2) {
+		/*for (int i = 0; i < rows; i+=2) {
 			forest.makeSet(i);
 			
 			System.out.println(i+" added to first column");
-		}
+		}*/
 
 		for (int j = 0; j < (columns-2)*rows; j+=2*rows) {
 			
 			System.out.println("Column "+j/rows);
+			
+			// Add rest of the column
+			for (int i = 0; i < rows; i+=2)
+				if (forest.find(i+j) == null) {
+					forest.makeSet(i+j);
+					
+					System.out.println(i+" added to "+j/rows+"th column");
+				}
+			
 
 			// Randomly make vertical connections
 			for (int i = 0; i < rows-2; i+=2) 
@@ -79,7 +88,7 @@ public class WorldGenerator {
 			// Then pick a random element from each list and join it to the next column.
 			for (List<Integer> list : disjointLists) {
 				Integer join = list.get(rand.nextInt(list.size()));
-				forest.makeSet(join + 2*rows);
+				forest.makeSet(join + 2*rows);				
 				forest.union(join, join + 2*rows);
 				world.removeElement(join - j, j/rows + 1);
 				
@@ -87,23 +96,17 @@ public class WorldGenerator {
 				
 				System.out.println("Horizontal break at: "+(join-j));
 			}
-				
-			
-				
-			// Add rest of the next column
-			for (int i = 0; i < rows; i+=2)
-				if (forest.find(i+j) == null) {
-					forest.makeSet(i+j);
-					
-					System.out.println(i+" added to "+j/rows+"th column");
-				}
 		}
+		
+		System.out.println("Final column");
 
 		// For final column, connect all adjacent disjoint spaces
 		for (int i = 0; i < rows-2; i+=2)
 			if (forest.find(i+(columns-1)*rows) != forest.find(i+(columns-1)*rows+2)) {
 				forest.union(i+(columns-1)*rows,i+(columns-1)*rows+2);
 				world.removeElement(i+1, columns-1);
+				
+				System.out.println("Connect: "+i+ ","+(i+2));
 			}
 		
 		
