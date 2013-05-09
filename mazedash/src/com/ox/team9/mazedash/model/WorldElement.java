@@ -46,5 +46,7 @@ public abstract class WorldElement {
 	}
 	
 	
-	public abstract void accept(ArrayList<WorldElement> tower, WorldElementVisitor visitor);
+	public abstract void accept(GameState gameState, ArrayList<WorldElement> tower, WorldElementVisitor visitor);
+	
+	public abstract WorldElement cloneElement();
 }

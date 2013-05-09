@@ -9,7 +9,7 @@ public class PlayerVisitor implements WorldElementVisitor {
 	protected boolean canVisit;
 	
 	@Override
-	public void visit(ArrayList<WorldElement> tower, Key key) {
+	public void visit(GameState gameState, ArrayList<WorldElement> tower, Key key) {
 		if (visited) {
 			throw new IllegalStateException();
 		}
@@ -18,11 +18,30 @@ public class PlayerVisitor implements WorldElementVisitor {
 		
 		canVisit = true;
 		
+		gameState.collectKey();
+		
 		tower.remove(key);
+		
+		//System.out.println("Collected key.");
 	}
 	
 	@Override
-	public void visit(ArrayList<WorldElement> tower, Gate gate) {
+	public void visit(GameState gameState, ArrayList<WorldElement> tower, Gate gate) {
+		if (visited) {
+			throw new IllegalStateException();
+		}
+		
+		visited = true;
+		
+		canVisit = false;
+		
+		if (gameState.hasKey()) {
+			gameState.reset();
+		}
+	}
+	
+	@Override
+	public void visit(GameState gameState, ArrayList<WorldElement> tower, Block block) {
 		if (visited) {
 			throw new IllegalStateException();
 		}
@@ -33,7 +52,7 @@ public class PlayerVisitor implements WorldElementVisitor {
 	}
 	
 	@Override
-	public void visit(ArrayList<WorldElement> tower, Block block) {
+	public void visit(GameState gameState, ArrayList<WorldElement> tower, Obstacle obstacle) {
 		if (visited) {
 			throw new IllegalStateException();
 		}
@@ -44,8 +63,8 @@ public class PlayerVisitor implements WorldElementVisitor {
 	}
 	
 	@Override
-	public void visit(ArrayList<WorldElement> tower, Player player) {
-		
+	public void visit(GameState gameState, ArrayList<WorldElement> tower, Roleplayer roleplayer) {
+		throw new IllegalStateException();
 	}
 	
 	public boolean couldVisit() {

@@ -9,9 +9,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.ox.team9.mazedash.visitor.WorldElementVisitor;
 
 public class Key extends WorldElement {
-
+	private Texture sprites;
+	
 	public Key(Texture sprites) {
 		super(sprites);
+		
+		this.sprites = sprites;
 	}
 	
 	@Override
@@ -31,8 +34,14 @@ public class Key extends WorldElement {
 		return 20;
 	}
 	
-	public void accept(ArrayList<WorldElement> tower, WorldElementVisitor visitor) {
-		visitor.visit(tower, this);
+	@Override
+	public void accept(GameState gameState, ArrayList<WorldElement> tower, WorldElementVisitor visitor) {
+		visitor.visit(gameState, tower, this);
+	}
+	
+	@Override
+	public WorldElement cloneElement() {
+		return new Key(sprites);
 	}
 
 }

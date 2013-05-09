@@ -1,11 +1,15 @@
 package com.ox.team9.mazedash.model;
 
+import java.util.ArrayList;
+
+import com.ox.team9.mazedash.visitor.WorldElementVisitor;
+
 import com.badlogic.gdx.graphics.Texture;
 
-public class HighStoneBlock extends HighBlock {
+public class Tree extends Obstacle {
 	private Texture sprites;
 	
-	public HighStoneBlock(Texture sprites) {
+	public Tree(Texture sprites) {
 		super(sprites);
 		
 		this.sprites = sprites;
@@ -18,11 +22,17 @@ public class HighStoneBlock extends HighBlock {
 
 	@Override
 	public int spriteRow() {
-		return 15;
+		return 16;
+	}
+
+	@Override
+	public int getHeight() {
+		return 20;
 	}
 	
 	@Override
 	public WorldElement cloneElement() {
-		return new HighStoneBlock(sprites);
+		return new Tree(sprites);
 	}
+
 }

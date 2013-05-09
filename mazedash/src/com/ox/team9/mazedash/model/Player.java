@@ -4,17 +4,25 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.ox.team9.mazedash.visitor.WorldElementVisitor;
 
+import com.ox.team9.mazedash.util.*;
 import com.ox.team9.mazedash.visitor.*;
 
-public class Player extends Character {
+public class Player extends Roleplayer {
 	
 	public static final int SPEED_IN_PX_PER_SECOND = 300;
 	public static final int SIZE_IN_PX = 40;
 	
+	public int speed;
+	
+	private Texture sprites;
+	
 	public Player(Texture sprites) {
 		super(sprites);
+		
+		speed = 300;
+		
+		this.sprites = sprites;
 	}
 	
 	@Override
@@ -32,8 +40,25 @@ public class Player extends Character {
 		return 0;
 	}
 	
-	public void accept(ArrayList<WorldElement> tower, WorldElementVisitor visitor) {
-		visitor.visit(tower, this);
+	@Override
+	public int getRadius() {
+		return 20;
+	}
+	
+	@Override
+	public int getSpeed() {
+		return speed;
+	}
+	
+	// The player cannot be moved by AI.
+	@Override
+	public Direction aiMove() {
+		return null;
+	}
+	
+	@Override
+	public WorldElement cloneElement() {
+		return new Player(sprites);
 	}
 	
 }
